@@ -22,9 +22,9 @@ def inference(model_inputs:dict) -> dict:
     global model
     vectorised_chunks = model_inputs.get("vectorised_chunks", None)
     query = model_inputs.get("query", None)
+    print(query)
     query_embedding = model.encode(query)
     doc_embeddings = np.array([np.array(json.loads(chunk['vector'])).astype(np.float32) for chunk in vectorised_chunks])
     hits = util.semantic_search(torch.from_numpy(query_embedding), torch.from_numpy(doc_embeddings), top_k=5)
+    print(hits)
     return [vectorised_chunks[hit['corpus_id']] for hit in hits[0]]
-
-    return chunks
